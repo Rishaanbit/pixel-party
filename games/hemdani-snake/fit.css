@@ -1,0 +1,75 @@
+/* One spacing system for the full viewport-fitted Snake layout. */
+html,body{margin:0;min-height:0;height:100%;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center}
+.shell{
+  --section-gap:20px;
+  display:flex;flex-direction:column;gap:var(--section-gap);
+  flex:0 0 auto;width:100%;max-width:896px;
+  padding:20px 24px;margin:0 auto;
+}
+/* Let the header grow with its buttons instead of squeezing 44px into 36px. */
+.masthead{height:auto;min-height:44px;gap:20px;flex-shrink:0}
+.brand{gap:12px}
+.brand svg{width:30px;height:30px}
+.sound{min-height:44px;font-size:16px;padding:10px 4px;gap:10px}
+.hero{display:none}
+.game-console{display:flex;flex-direction:column;gap:18px;min-width:0}
+.hud{gap:24px;padding:10px 0 12px;margin:0;border-top:0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:12px;min-width:0}
+.stat label{line-height:1.5}
+.stat output{line-height:1.5}
+.hud-status{gap:10px;line-height:1.5}
+.pause{flex-shrink:0;width:44px;height:44px;min-width:44px;min-height:44px;font-size:24px}
+.board-wrap{flex:none;padding:8px;margin:0 auto;max-width:100%}
+.screen{max-width:100%;aspect-ratio:auto}
+.below-board{margin:0;padding:0;gap:0}
+.speed-control{width:100%;justify-content:center;gap:12px;flex-wrap:wrap}
+.speed-label{font-size:15px;line-height:1.5;margin:0 6px 0 0}
+.mode{min-height:44px;padding:10px 16px;font-size:17px;line-height:1.4}
+.controls{margin:0;gap:18px 28px;font-size:15px;line-height:1.5;flex-wrap:wrap}
+.control{gap:10px}
+.keys{gap:6px}
+.controls kbd{min-width:28px;height:28px;font-size:17px;padding:0 7px}
+.mobile-controls{margin:0;gap:12px;flex-shrink:0}
+.direction{width:64px;height:56px;font-size:32px}
+.overlay{padding:16px;gap:12px}
+.overlay h2{font-size:clamp(16px,4vw,30px);margin:0}
+.overlay-copy,.overlay[data-kind=over] .overlay-copy{font-size:20px;line-height:1.4;margin:0}
+.run-detail{margin:0;font-size:13px;line-height:1.4}
+.eyebrow{margin:0;font-size:12px;line-height:1.4}
+.key-prompt{margin:0;line-height:1.4}
+.play{min-height:48px;padding:14px 22px}
+@media(max-width:895px),(any-pointer:coarse){
+  .mobile-controls{display:flex;justify-content:center;gap:12px}
+  .controls{display:none}
+}
+@media(max-width:600px){
+  .shell{--section-gap:18px;padding:16px}
+  .game-console{gap:16px}
+  .hud{gap:12px;padding:8px 0 12px}
+  .stat{display:grid;gap:6px}
+  .stat output{font-size:16px}
+  .hud-status{font-size:12px;letter-spacing:0;gap:6px}
+  .speed-control{gap:8px}
+  .speed-label{flex-basis:100%;text-align:center;margin:0 0 2px}
+  .mode{padding:10px 12px;font-size:16px}
+  .direction{width:58px;height:54px}
+}
+@media(max-height:450px){
+  .shell{--section-gap:10px;padding:10px 16px}
+  .masthead{min-height:44px}
+  .game-console{gap:10px}
+  .hud{padding:0 0 8px;gap:16px}
+  .stat{display:flex;gap:8px}.stat output{font-size:14px}
+  .mode{min-height:44px;padding:8px 12px}
+  .speed-label{flex-basis:auto;margin:0 4px 0 0}
+  .direction{width:56px;height:44px;font-size:28px}
+  .controls{display:none}
+  .overlay{padding:8px;gap:8px}
+  .play{min-height:36px;padding:8px 14px;font-size:10px}
+  .key-prompt,.eyebrow,.run-detail{display:none}
+  .overlay h2{font-size:16px}
+  .overlay[data-kind=over] .overlay-copy{font-size:16px}
+}
+/* Hide instructional text while retaining the playable buttons. */
+.controls,.key-prompt{display:none}

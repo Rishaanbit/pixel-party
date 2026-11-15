@@ -1,0 +1,26 @@
+@font-face{font-family:Arcade;src:url('../../assets/arcade.ttf') format('truetype');font-display:swap}
+body{background:radial-gradient(ellipse at top,#242038 0,transparent 65%),#101019;padding:28px 18px}
+.pong{max-width:780px}
+.pong .hud{max-width:680px;margin-bottom:26px;align-items:center}
+.pong h1{font:24px/1.5 Arcade,monospace;color:#f1e7c5;text-shadow:3px 3px #715881;letter-spacing:0}
+.match-label{font-size:9px;letter-spacing:2px;color:#aaa3ba;margin:8px 0 0;text-align:left}
+.pong .score{display:flex;align-items:center;gap:22px}
+.score-side{display:flex;flex-direction:column;gap:8px;min-width:44px;font-size:10px;letter-spacing:2px;color:#c5f581}
+.score-side.cpu-score{color:#c1a3fa}
+.score-side strong{font:27px/1.3 Arcade,monospace;letter-spacing:0}
+.score-divider{color:#625b73;font-size:20px}
+.pong .stage{border:1px solid #5c536e;border-radius:4px;box-shadow:0 0 0 6px #1d1929,0 0 0 7px #383143,0 12px 28px #0005;margin:0 auto}
+.pong .overlay{background:radial-gradient(ellipse,#14121fed 0%,#14121fbd 60%,#14121f77);gap:16px}
+.pong .overlay h2{font:22px/1.5 Arcade,monospace;color:#f1e7c5;margin:0;letter-spacing:-1px}
+.pong .overlay p{line-height:1.8;margin:0;color:#c2bccc}
+.pong button{border-radius:2px;min-height:44px;border-color:#52495f;background:#262131;box-shadow:0 3px #090910;padding:12px 20px;letter-spacing:1px}
+.pong button.primary{background:#c5f581;color:#152017;border-color:#d7ffab;font:10px/1.6 Arcade,monospace;box-shadow:0 4px #517847}
+.pong button:hover:not(:disabled){border-color:#c5f581;background:#332b41}
+.pong button.primary:hover{background:#d4ff9d}
+.pong .status{margin:24px 0 18px;font-size:10px;letter-spacing:2px;min-height:16px;color:#bbb0cf}
+.pong .toolbar{gap:14px;margin:0 0 18px}
+.pong .touch-controls{gap:14px}
+.pong .touch-controls button{min-width:112px;color:#c5f581;font-size:15px}
+.pong .instructions{margin-top:22px;color:#9e96af;line-height:2.2}
+.pong kbd{color:#d8d0e3}
+@media(max-width:480px){body{padding:22px 16px}.pong .hud{margin-bottom:24px}.pong h1{font-size:18px}.pong .score{gap:14px}.score-side strong{font-size:21px}.score-side{font-size:9px;min-width:32px}.match-label{font-size:8px;letter-spacing:1px}.pong .overlay{gap:10px;padding:12px}.pong .overlay h2{font-size:15px}.pong .overlay p{font-size:10px;line-height:1.5;max-width:260px}.pong .overlay button{min-height:36px;padding:8px 12px;font-size:9px}.pong .status{font-size:9px;letter-spacing:1px}}

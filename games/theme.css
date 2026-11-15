@@ -1,0 +1,29 @@
+/* Shared Pixel Party appearance. Game-specific files own layout and sizing. */
+@font-face{font-family:Arcade;src:url('../assets/arcade.ttf') format('truetype');font-display:swap}
+:root{color-scheme:dark;--game-bg:#101019;--game-panel:#1d1929;--game-border:#5c536e;--game-lime:#c5f581;--game-lavender:#c1a3fa;--game-text:#f3f0e8;--game-muted:#a6a2b8;background:var(--game-bg)}
+body{min-height:100svh;background:radial-gradient(ellipse at 50% 10%,#30223f66,transparent 65%),var(--game-bg);color:var(--game-text);font-family:'Courier New',monospace}
+body:before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:1;background-image:radial-gradient(#a89cb82b .8px,transparent .8px);background-size:20px 20px}
+body>main{position:relative;z-index:1}
+:is(.pong,.tetris) h1,.shell .brand{font-family:Arcade,monospace;font-size:24px;line-height:1.5;letter-spacing:0;color:#f1e7c5;text-shadow:3px 3px #715881}
+:is(.pong,.tetris) .stage,.shell .board-wrap{background:var(--game-panel);border:1px solid var(--game-border);border-radius:4px;box-shadow:0 5px 0 #090910,0 12px 28px #0005}
+:is(.pong,.tetris) .stage:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#0000000c 3px 4px);box-shadow:inset 0 0 45px #0003}
+:is(.pong,.tetris) .overlay{z-index:2;background:radial-gradient(ellipse,#14121fed 0%,#14121fbd 60%,#14121f77);gap:16px}
+:is(.pong,.tetris) .overlay h2{font-family:Arcade,monospace;font-size:22px;line-height:1.5;color:#f1e7c5;text-shadow:2px 2px #715881;letter-spacing:-1px;margin:0}
+:is(.pong,.tetris) .overlay p{line-height:1.8;margin:0;color:#c2bccc}
+:is(.pong,.tetris) button{min-height:44px;border:1px solid #52495f;border-radius:2px;background:#262131;box-shadow:0 3px #090910;color:#d8d0e3;letter-spacing:1px}
+:is(.pong,.tetris) button:hover:not(:disabled){background:#332b41;border-color:var(--game-lime)}
+:is(.pong,.tetris) button.primary{font:10px/1.6 Arcade,monospace;background:var(--game-lime);color:#152017;border-color:#d7ffab;box-shadow:0 4px #517847}
+:is(.pong,.tetris) button.primary:hover{background:#d4ff9d}
+:is(.pong,.tetris) button:active:not(:disabled){box-shadow:0 1px #090910}
+:is(.pong,.tetris) .touch-controls button{color:var(--game-lime)}
+:is(.pong,.tetris) button:focus-visible,.shell button:focus-visible{outline:2px solid var(--game-lime);outline-offset:4px}
+:is(.pong,.tetris) .toolbar,:is(.pong,.tetris) .touch-controls{gap:14px}
+:is(.pong,.tetris) .instructions,:is(.pong,.tetris) .next{color:var(--game-muted);line-height:1.9}
+.tetris .score{color:var(--game-lavender)}
+.tetris #score{color:var(--game-lime);font-weight:bold}
+.tetris .hud{margin-bottom:24px}
+.tetris .next{margin:24px 0 18px}
+.tetris .instructions{margin-top:22px}
+@media(max-width:600px){:is(.pong,.tetris) h1,.shell .brand{font-size:18px}}
+@media(max-width:480px){:is(.pong,.tetris) .overlay{gap:10px;padding:12px}:is(.pong,.tetris) .overlay h2{font-size:15px}:is(.pong,.tetris) .overlay p{font-size:10px;line-height:1.5}:is(.pong,.tetris) .overlay button{font-size:9px}}
+@media(max-height:450px){.shell .brand{font-size:18px}}
