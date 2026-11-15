@@ -1,9 +1,38 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101019"><title>Shop — Pixel Party</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="economy.css?v=2"><script src="economy.js?v=2" defer></script><script src="shop.js?v=2" defer></script></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101019">
+<title>Shop — Pixel Party</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="economy.css?v=3">
+<script src="economy.js?v=2" defer></script><script src="shop.js?v=3" defer></script>
+</head>
+<body>
 <header class="site-header wrap"><a class="brand" href="index.html">▦ PIXEL<span>PARTY</span></a><nav class="wallet-nav"><a href="index.html">GAMES</a><span class="wallet">◈ <span data-wallet>0</span> TOKENS</span></nav></header>
-<main class="wrap shop-main"><div class="shop-heading"><h1>SHOP</h1><p>Earn tokens in games. Buy an item to equip it. Owned items can be switched for free.</p></div>
+<main class="wrap shop-main">
+<div class="shop-heading"><h1>SHOP</h1><p>Equip one site theme and one set of game colors. They work together.</p></div>
 <div class="earning-rules"><span>SNAKE · 2 / FOOD</span><span>TETRIS · 8 / ROW</span><span>PONG · 3 / POINT + 10 / WIN</span></div>
-<div class="equipped-summary"><span>THEME: <strong id="active-theme">Midnight</strong></span><span>SCREEN: <strong id="active-screen">Original</strong></span><svg class="palette-preview" viewBox="0 0 120 48" role="img" aria-label="Live preview of equipped game-screen colors"><path fill="#c5f581" d="M12 12h12v12h12v12H12z"/><path fill="#c1a3fa" d="M54 12h24v24H54z"/><path fill="#f4bc79" d="M96 18h12v12H96z"/></svg><p>One theme and one screen palette can be active together. Screen palettes change game boards; themes change the site.</p></div>
-<p id="shop-status" role="status" aria-live="polite">Choose a theme or game-screen palette.</p>
-<section aria-labelledby="themes-title"><h2 id="themes-title">SITE THEMES</h2><div class="shop-grid" id="theme-items"></div></section>
-<section aria-labelledby="screens-title"><h2 id="screens-title">GAME-SCREEN PALETTES</h2><div class="shop-grid" id="screen-items"></div></section>
-<p class="save-note" data-save-note></p><p class="save-note">Lifetime tokens earned: <span data-earned>0</span>. Purchases use tokens only—no real money.</p></main></body></html>
+<div class="equipped-summary">
+  <span>SITE THEME: <strong id="active-theme">Midnight</strong></span>
+  <span>GAME COLORS: <strong id="active-screen">Original</strong></span>
+  <svg class="palette-preview" viewBox="0 0 120 48" role="img" aria-label="Preview of your current game colors"><path fill="#c5f581" d="M12 12h12v12h12v12H12z"/><path fill="#c1a3fa" d="M54 12h24v24H54z"/><path fill="#f4bc79" d="M96 18h12v12H96z"/></svg>
+</div>
+<div class="shop-tabs" role="tablist" aria-label="Shop categories">
+  <button type="button" role="tab" id="theme-tab" aria-selected="true" aria-controls="theme-panel" tabindex="0">SITE THEMES</button>
+  <button type="button" role="tab" id="screen-tab" aria-selected="false" aria-controls="screen-panel" tabindex="-1">GAME COLORS</button>
+</div>
+<p id="shop-status" role="status" aria-live="polite"></p>
+<section id="theme-panel" class="shop-panel" role="tabpanel" aria-labelledby="theme-tab" tabindex="0">
+  <h2>CHANGE THE SITE</h2>
+  <p class="category-help">Changes the background and buttons. Choose one theme here; your game colors stay the same.</p>
+  <div class="shop-grid" id="theme-items"></div>
+</section>
+<section id="screen-panel" class="shop-panel" role="tabpanel" aria-labelledby="screen-tab" tabindex="0" hidden>
+  <h2>CHANGE THE GAME BOARDS</h2>
+  <p class="category-help">Changes the colors inside Snake, Tetris, and Pong. Choose one set here; your site theme stays the same.</p>
+  <div class="shop-grid" id="screen-items"></div>
+</section>
+<p class="save-note" data-save-note></p>
+<p class="save-note">Lifetime tokens earned: <span data-earned>0</span>. Purchases use tokens only—no real money.</p>
+</main>
+</body>
+</html>

@@ -18,3 +18,15 @@ html[data-screen=candy] canvas{filter:hue-rotate(225deg) saturate(1.15)}
 .palette-preview{display:block;width:120px;height:48px;background:#141720;border:1px solid #52495f}
 html[data-screen=frost] .palette-preview{filter:hue-rotate(95deg) saturate(.8)}
 html[data-screen=candy] .palette-preview{filter:hue-rotate(225deg) saturate(1.15)}
+/* Separate equipment slots into accessible categories. */
+.shop-tabs{display:flex;gap:8px;border-bottom:1px solid #52495f;padding-bottom:10px;margin-top:30px}
+.shop-tabs button{min-height:48px;padding:14px 22px;border:1px solid #52495f;background:#1c1b27;color:#b7b0c4;font:700 12px/1.5 'Courier New',monospace;letter-spacing:1px;cursor:pointer}
+.shop-tabs button[aria-selected=true]{background:var(--shop-accent,#c5f581);border-color:var(--shop-accent,#c5f581);color:#152017;box-shadow:0 3px #517847}
+.shop-tabs button:hover:not([aria-selected=true]){border-color:#c1a3fa;color:#f3f0e8}
+.shop-tabs button:focus-visible,.shop-panel:focus-visible{outline:2px solid #f3f0e8;outline-offset:4px}
+.shop-panel[hidden]{display:none}
+.shop-main .shop-panel{margin-top:20px}
+.shop-panel h2{margin-bottom:8px}
+.category-help{font:12px/1.8 'Courier New',monospace;color:#b7b0c4;margin:0 0 22px;max-width:650px}
+#shop-status:empty{display:none}
+@media(max-width:650px){.shop-tabs button{flex:1;padding:12px 10px;font-size:11px;letter-spacing:.5px}}
