@@ -10,3 +10,11 @@ html:not([data-theme=midnight])[data-theme] :is(.play-button,button.primary,butt
 html[data-screen=frost] canvas{filter:hue-rotate(95deg) saturate(.8)}
 html[data-screen=candy] canvas{filter:hue-rotate(225deg) saturate(1.15)}
 @media(max-width:650px){.wallet-nav{gap:12px;font-size:9px;letter-spacing:0}.wallet-nav .wallet{font-size:9px}.shop-grid{grid-template-columns:1fr}.shop-heading h1{font-size:21px}.shop-main{padding-top:28px}.round-wallet{font-size:9px}.player-header{flex-wrap:wrap;align-content:center}.player-header .wallet-nav{margin-left:auto}}
+.equipped-summary{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding:18px;border:1px solid #52495f;background:#1c1b27;margin:22px 0;font:12px/1.8 'Courier New',monospace;color:#b7b0c4}
+.equipped-summary strong{color:#c5f581}
+.equipped-summary p{margin:0;flex-basis:100%;font-size:11px}
+.shop-card.is-equipped{border-color:#c5f581}
+.shop-card button[aria-pressed=true]{background:#292533;border-color:#c5f581;color:#c5f581}
+.palette-preview{display:block;width:120px;height:48px;background:#141720;border:1px solid #52495f}
+html[data-screen=frost] .palette-preview{filter:hue-rotate(95deg) saturate(.8)}
+html[data-screen=candy] .palette-preview{filter:hue-rotate(225deg) saturate(1.15)}

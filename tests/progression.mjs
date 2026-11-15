@@ -5,13 +5,13 @@ const root=new URL('../',import.meta.url);
 const load=p=>fs.readFile(new URL(p,root),'utf8');
 const economy=await load('economy.js');
 function browser(store=new Map(),blocked=false){
- const nodes=new Map(),listeners={};
+ const nodes=new Map(),listeners={},documentListeners={};
  const paint=new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(o,k)=>o[k]||(()=>{})});
- const document={readyState:'loading',documentElement:{dataset:{}},body:{dataset:{}},getElementById(id){if(!nodes.has(id))nodes.set(id,{textContent:'',getContext:()=>paint,addEventListener(){}});return nodes.get(id);},querySelectorAll(){return [];},addEventListener(){}};
+ const document={readyState:'loading',documentElement:{dataset:{}},body:{dataset:{}},getElementById(id){if(!nodes.has(id))nodes.set(id,{textContent:'',getContext:()=>paint,addEventListener(){}});return nodes.get(id);},querySelectorAll(){return [];},addEventListener(name,fn){documentListeners[name]=fn;}};
  const window={addEventListener(name,fn){listeners[name]=fn;},dispatchEvent(){},devicePixelRatio:1};
  const context=vm.createContext({document,window,navigator:{},localStorage:{getItem:k=>{if(blocked)throw Error('Blocked');return store.get(k)??null;},setItem:(k,v)=>{if(blocked)throw Error('Blocked');store.set(k,v);}},structuredClone,CustomEvent:class{constructor(type,args){this.type=type;this.detail=args.detail;}},performance:{now:()=>0},requestAnimationFrame(){},matchMedia:()=>({matches:false}),Math});
  vm.runInContext(economy,context);
- return {context,api:window.PixelParty,document,listeners};
+ return {context,api:window.PixelParty,document,listeners,documentListeners};
 }
 const store=new Map(),a=browser(store);
 assert.equal(a.api.read().balance,0);
@@ -31,6 +31,35 @@ assert.equal((await reload.api.choose('missing')).ok,false);
 assert.equal((await reload.api.award(-5)).ok,false);
 const blocked=browser(new Map(),true);await blocked.api.award(30);await blocked.api.choose('frost');assert.equal(blocked.api.read().balance,5);
 const corrupted=browser(new Map([['pixel-party-wallet-v1',JSON.stringify({balance:-9,owned:['fake'],theme:'ocean'})]]));assert.equal(corrupted.api.read().balance,0);assert.equal(corrupted.api.read().theme,'midnight');
+// Returning to a cached page refreshes both applied theme and screen selection.
+const cached=browser(store);cached.api.refresh();
+await reload.api.choose('midnight');await reload.api.choose('candy');
+assert.equal(cached.document.documentElement.dataset.theme,'ocean');
+cached.listeners.pageshow({persisted:true});
+assert.equal(cached.document.documentElement.dataset.theme,'midnight');
+assert.equal(cached.document.documentElement.dataset.screen,'candy');
+await reload.api.choose('ocean');cached.listeners.focus();
+assert.equal(cached.document.documentElement.dataset.theme,'ocean');
+await reload.api.choose('original');cached.documentListeners.visibilitychange();
+assert.equal(cached.document.documentElement.dataset.screen,'original');
+const remaining=reload.api.read().balance;
+await Promise.all([reload.api.choose('candy'),reload.api.choose('frost'),reload.api.choose('original')]);
+assert.equal(reload.api.read().screen,'original');assert.equal(reload.api.read().balance,remaining);
+// A cached parent also updates the embedded game document.
+let frameRefreshes=0;cached.document.querySelectorAll=selector=>selector==='iframe'?[{contentWindow:{PixelParty:{refresh(){frameRefreshes++;}}}}]:[];
+cached.listeners.pageshow({persisted:true});assert.equal(frameRefreshes,1);
+// Shop updates preserve the exact button nodes and can switch owned items repeatedly.
+const shop=browser(store);shop.context.PixelParty=shop.api;
+function element(){return {children:[],textContent:'',disabled:false,style:{setProperty(){}},classList:{toggle(){}},setAttribute(){},append(...children){this.children.push(...children);}};}
+const ui=new Map();shop.document.getElementById=id=>{if(!ui.has(id))ui.set(id,element());return ui.get(id);};shop.document.createElement=element;
+vm.runInContext(await load('shop.js'),shop.context);
+const frostButton=vm.runInContext("shopCards.get('frost').button",shop.context);
+await frostButton.onclick();assert.equal(shop.api.read().screen,'frost');
+vm.runInContext('renderShop()',shop.context);
+assert.equal(vm.runInContext("shopCards.get('frost').button",shop.context),frostButton);
+await vm.runInContext("shopCards.get('original').button.onclick()",shop.context);
+assert.equal(shop.api.read().screen,'original');assert.equal(ui.get('active-screen').textContent,'Original');
+assert.equal(shop.api.read().balance,remaining);
 // Actual Tetris lock: completing a row earns tokens; moving/dropping alone does not.
 const t=browser();vm.runInContext(await load('games/tetris/tetris.js'),t.context);
 vm.runInContext("start();action('drop');",t.context);await t.api.settled();assert.equal(t.api.read().balance,0);

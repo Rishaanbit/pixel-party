@@ -1,4 +1,42 @@
 'use strict';
-let busy=false;
-function renderShop(){const s=PixelParty.read();for(const kind of ['theme','screen']){const container=document.getElementById(kind+'-items');container.replaceChildren();for(const item of PixelParty.items.filter(i=>i.kind===kind)){const owned=s.owned.includes(item.id),equipped=s[kind]===item.id;const card=document.createElement('article');card.className='shop-card';const preview=document.createElement('div');preview.className='item-preview '+item.kind;preview.style.setProperty('--sample-bg',item.colors[0]);preview.style.setProperty('--sample-accent',item.colors[1]);preview.setAttribute('aria-hidden','true');preview.innerHTML='<span>▦</span><span>◈</span><span>▰</span>';const name=document.createElement('h3');name.textContent=item.name;const desc=document.createElement('p');desc.textContent=item.description;const button=document.createElement('button');button.textContent=equipped?'EQUIPPED':owned?'EQUIP':`BUY · ${item.price} TOKENS`;button.disabled=busy||equipped||(!owned&&s.balance<item.price);button.setAttribute('aria-label',button.textContent+' '+item.name);button.onclick=async()=>{busy=true;renderShop();try{const result=await PixelParty.choose(item.id);document.getElementById('shop-status').textContent=result.message;}catch{document.getElementById('shop-status').textContent='Could not complete the purchase. Please try again.';}finally{busy=false;renderShop();}};const note=document.createElement('small');note.textContent=equipped?'Currently active':owned?'Owned':s.balance<item.price?`${item.price-s.balance} more tokens needed`:'Buy once. Keep in this browser.';card.append(preview,name,desc,button,note);container.append(card);}}}
-window.addEventListener('walletchange',renderShop);renderShop();
+// Keep buttons mounted so wallet updates cannot swallow clicks or keyboard focus.
+const shopCards=new Map();
+const pendingItems=new Set();
+function buildShop(){
+  for(const item of PixelParty.items){
+    const card=document.createElement('article');card.className='shop-card';
+    const preview=document.createElement('div');preview.className='item-preview '+item.kind;
+    preview.style.setProperty('--sample-bg',item.colors[0]);preview.style.setProperty('--sample-accent',item.colors[1]);
+    preview.setAttribute('aria-hidden','true');preview.innerHTML='<span>▦</span><span>◈</span><span>▰</span>';
+    const name=document.createElement('h3');name.textContent=item.name;
+    const desc=document.createElement('p');desc.textContent=item.description;
+    const button=document.createElement('button');button.type='button';
+    const note=document.createElement('small');
+    button.onclick=async()=>{
+      if(pendingItems.has(item.id))return;
+      pendingItems.add(item.id);renderShop();
+      try{const result=await PixelParty.choose(item.id);document.getElementById('shop-status').textContent=result.message;}
+      catch{document.getElementById('shop-status').textContent='Could not equip the item. Please try again.';}
+      finally{pendingItems.delete(item.id);renderShop();}
+    };
+    card.append(preview,name,desc,button,note);
+    document.getElementById(item.kind+'-items').append(card);
+    shopCards.set(item.id,{card,button,note});
+  }
+}
+function renderShop(){
+  const s=PixelParty.read();
+  for(const item of PixelParty.items){
+    const view=shopCards.get(item.id);if(!view)continue;
+    const owned=s.owned.includes(item.id),equipped=s[item.kind]===item.id,pending=pendingItems.has(item.id);
+    view.button.textContent=pending?'APPLYING…':equipped?'EQUIPPED':owned?'EQUIP':`BUY · ${item.price} TOKENS`;
+    view.button.disabled=pending||(!owned&&s.balance<item.price);
+    view.button.setAttribute('aria-label',view.button.textContent+' '+item.name);
+    view.button.setAttribute('aria-pressed',String(equipped));
+    view.card.classList.toggle('is-equipped',equipped);
+    const needed=item.price-s.balance;
+    view.note.textContent=equipped?'Currently active':owned?'Owned — switch for free':needed>0?`${needed} more ${needed===1?'token':'tokens'} needed`:'Buy once. Keep in this browser.';
+  }
+  for(const kind of ['theme','screen'])document.getElementById('active-'+kind).textContent=PixelParty.items.find(i=>i.id===s[kind]).name;
+}
+buildShop();window.addEventListener('walletchange',renderShop);renderShop();
